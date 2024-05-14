@@ -4,6 +4,7 @@ var pi=[];
 
 var selectProductos=document.getElementById("pro1");
 var slectpizza=document.querySelector("#piz")
+var selectProductos=document.getElementById("precio");
 var imgProductos=document.getElementById("ima");
 var precioProductos=document.getElementById("precio");
 var inputCantidad=document.getElementById("cantidad");
@@ -53,8 +54,9 @@ selectProductos.onchange=()=>{
 const cargarPrecio=()=>{
     precioProductos=`$ ${precios[selectProductos.selectedIndex]}`;
     posProducto=selectProductos.selectedIndex;
+    
 }
-
+precio.innerHTML=cargarPrecio;
 inputCantidad.oninput=()=>{
     vcan.innerHTML=inputCantidad.value;
     cantidadProducto=parseInt(inputCantidad.value);
