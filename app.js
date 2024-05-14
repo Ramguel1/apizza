@@ -56,7 +56,7 @@ const cargarPrecio=()=>{
     posProducto=selectProductos.selectedIndex;
     
 }
-precio.innerHTML=cargarPrecio;
+
 inputCantidad.oninput=()=>{
     vcan.innerHTML=inputCantidad.value;
     cantidadProducto=parseInt(inputCantidad.value);
