@@ -4,9 +4,9 @@ var pi=[];
 
 var selectProductos=document.getElementById("pro1");
 var slectpizza=document.querySelector("#piz")
-var selectProductos=document.getElementById("precio");
+var selectProductos=document.getElementById("preciooo");
 var imgProductos=document.getElementById("ima");
-var precioProductos=document.getElementById("precio");
+
 var inputCantidad=document.getElementById("cantidad");
 var agregarCarrito=document.getElementById("agre");
 var vcan=document.querySelector("#can");
