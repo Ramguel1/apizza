@@ -4,22 +4,23 @@ var pi=[];
 
 var selectProductos=document.getElementById("pro1");
 var slectpizza=document.querySelector("#piz")
-var selectProductos=document.getElementById("preciooo");
 var imgProductos=document.getElementById("ima");
-
+var precioProductos=document.getElementById("precio");
 var inputCantidad=document.getElementById("cantidad");
 var agregarCarrito=document.getElementById("agre");
 var vcan=document.querySelector("#can");
-//var p=document.querySelector("#pagar")
+
+
+
 var carrito=new Array();
-var total=0;
+var totalp=0;
 var new1=document.querySelector("#new");
 let nue=document.querySelector("#nuevop");
 var nn;
 var pp=document.querySelector("#pre");
 var nn=document.querySelector("#nom")
 var nueva=document.querySelector("#newta");
-
+ var r=document.querySelector("#pre");
 
 var nuevapi=document.querySelector("#nuevapizza");
 var pizza=document.querySelector("#pizza");
@@ -27,6 +28,8 @@ var pizza=document.querySelector("#pizza");
 
 var posProducto=-1;
 var cantidadProducto=0;
+
+
 
 
 
@@ -52,34 +55,62 @@ selectProductos.onchange=()=>{
     cargarPrecio();
 }
 const cargarPrecio=()=>{
-    precioProductos=`$ ${precios[selectProductos.selectedIndex]}`;
+  var APP=document.querySelector("#AGP");
+  APP.innerHTML=`$ ${precios[selectProductos.selectedIndex]}`;
     posProducto=selectProductos.selectedIndex;
-    
+   
+
 }
+
 
 inputCantidad.oninput=()=>{
     vcan.innerHTML=inputCantidad.value;
     cantidadProducto=parseInt(inputCantidad.value);
+    
+    var APP=document.querySelector("#AGP");
+  APP.innerHTML=`$ ${cantidadProducto*precios[selectProductos.selectedIndex]}`;
+    posProducto=selectProductos.selectedIndex;
+  
 }
 
 
 agregarCarrito.onclick=()=>{
     cantidadProducto=parseInt(inputCantidad.value);
     posProducto=selectProductos.selectedIndex;
-    let pizaaa=slectpizza.selectedIndex;
 
+   
+        let pizaaa=slectpizza.selectedIndex;
+       
     let item= new Array()
+    
     item.push(posProducto);
+   
     item.push(cantidadProducto);
-    item.push(pizaaa);
+    
+    item.push(pizaaa)
+   
     carrito.push(item);
     imprimirTabla();
+    }
+ 
+
+const checarItems=(pos,cant)=>{
+  let x=false;
+  carrito.forEach(item=>{
+    if (item[0]==pos) {
+      item[1]=item[1]+cant;
+      x=true;
+      
+    }
+  })
+  return x;
 
 }
 
 
+
 const imprimirTabla=()=>{
-    
+    let total=0;
     let divCarrito=document.getElementById("carrito");
     let tablaHTML= `<table class="table w-100 m-auto text-white">
     <tr>
@@ -106,6 +137,7 @@ const imprimirTabla=()=>{
         `
         vindex++;
         total+=(precios[item[0]]*item[1]);
+        totalp=total;
     })
 
 
@@ -145,14 +177,14 @@ const p=async()=>{
 const {value: pos} = await Swal.fire({
     title: "TOTAL A PAGAR",
     input: "number",
-    text: "Tu total es de :+" + total,
+    text: "El total a pagar es:" + totalp,
     showCancelButton: true,
     inputValidator: (value) => {
-      if (value<total) {
+      if (value<totalp) {
         return "Algo salio mal";
       }else{
         Swal.fire({
-            title: "Pago completado tu cambio es: " + (value-total) ,
+            title: "tu cambio es: " + (value-totalp) ,
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: "Ok",
@@ -185,3 +217,6 @@ nuevapi.onclick=()=>{
   pizza.value="";
   cargarProductos2();
 }
+
+
+
