@@ -1,9 +1,10 @@
+var pi=[];
 var productos=[];
 var precios=[];
-var pi=[];
 
-var selectProductos=document.getElementById("pro1");
 var slectpizza=document.querySelector("#piz")
+var selectProductos=document.getElementById("pro1");
+
 var imgProductos=document.getElementById("ima");
 var precioProductos=document.getElementById("precio");
 var inputCantidad=document.getElementById("cantidad");
@@ -27,13 +28,23 @@ var pizza=document.querySelector("#pizza");
 
 
 var posProducto=-1;
-var cantidadProducto=0;
+var cantidadProducto=1;
 
 
 
+/*let pizzas={slectpizza,precioProductos,selectProductos}
+carrito.push(pizzas);
+localStorage.setItem("carrito", JSON.stringify(carrito))
+imprimirTabla();
+*/
 
-
-
+const cargarProductos2=()=>{
+  let optionProductos2="";
+  pi.forEach((productos) => {
+      optionProductos2+=`<option value="${productos}">${productos.toUpperCase()}</option>`;
+  })
+  slectpizza.innerHTML=optionProductos2;
+}
 const cargarProductos=()=>{
     let optionProductos="";
     productos.forEach((producto) => {
@@ -43,13 +54,7 @@ const cargarProductos=()=>{
     cargarPrecio();
 }
 
-const cargarProductos2=()=>{
-  let optionProductos2="";
-  pi.forEach((productos) => {
-      optionProductos2+=`<option value="${productos}">${productos.toUpperCase()}</option>`;
-  })
-  slectpizza.innerHTML=optionProductos2;
-}
+
 
 selectProductos.onchange=()=>{
     cargarPrecio();
@@ -75,39 +80,41 @@ inputCantidad.oninput=()=>{
 
 
 agregarCarrito.onclick=()=>{
-    cantidadProducto=parseInt(inputCantidad.value);
-    posProducto=selectProductos.selectedIndex;
+  var orden=new Array();
+    let tipopizza=slectpizza.value.toUpperCase();
+    let tampizza=selectProductos.value.toUpperCase();
+    let preciopiza= precios[selectProductos.selectedIndex]
 
-   
-        let pizaaa=slectpizza.selectedIndex;
-       
-    let item= new Array()
+
+  
+    if(!checarPizzas(tipopizza,tampizza,cantidadProducto)){
     
-    item.push(posProducto);
-   
-    item.push(cantidadProducto);
-    
-    item.push(pizaaa)
-   
-    carrito.push(item);
-    imprimirTabla();
+    orden.push(tipopizza);
+    orden.push(tampizza);
+    orden.push(cantidadProducto);
+    orden.push(preciopiza);
+    carrito.push(orden);
+    }
+    imprimirTabla()
     }
  
 
-const checarItems=(pos,cant)=>{
-  let x=false;
-  carrito.forEach(item=>{
-    if (item[0]==pos) {
-      item[1]=item[1]+cant;
-      x=true;
+const checarPizzas=(tipo,tamaño,cantidad)=>{
+  let res=false;
+  carrito.forEach(orden=>{
+    if (orden[0]==tipo && orden[1]==tamaño) {
+      orden[2]+=cantidad;
+      res=true;
       
     }
   })
-  return x;
+  return res;
 
 }
 
-
+const imprimirTablaa=()=>{
+  console.log(carrito)
+}
 
 const imprimirTabla=()=>{
     let total=0;
@@ -124,19 +131,21 @@ const imprimirTabla=()=>{
     `;
     var vindex=0;
     console.log(carrito)
-    carrito.forEach(item=>{
+
+
+    carrito.forEach(orden=>{
         tablaHTML+=`
         <tr>
-        <td>${pi[item[2]]}</td>
-        <td>${productos[item[0]]}</td>
-        <td>$ ${precios[item[0]]}.00</td>
-        <td>${item[1]}</td>
-        <td>${(precios[item[0]]*item[1])}</td>
+        <td>${orden[0]}</td>
+        <td>${orden[1]}</td>
+        <td>$ ${orden[3]}.00</td>
+        <td>${orden[2]}</td>
+        <td>${orden[2]*orden[3]}</td>
         <td><button class="btn btn-danger" onclick="eliminar(${vindex})"><i class="bi bi-trash3-fill"></i></td>
         </tr>
         `
         vindex++;
-        total+=(precios[item[0]]*item[1]);
+        total+=(orden[3]*orden[2]);
         totalp=total;
     })
 
@@ -191,14 +200,18 @@ const {value: pos} = await Swal.fire({
             denyButtonText: "cancelar"
             
           })
-          document.getElementById("carrito").innerHTML="";
+          desaparecerPedido();
+
       }
     }
   }); 
   
 }
 
-
+const desaparecerPedido=()=>{
+    carrito=[];
+    document.getElementById("carrito").innerHTML="";
+ }
 
 nue.onclick=()=>{
     let p=pp.value;
@@ -217,6 +230,3 @@ nuevapi.onclick=()=>{
   pizza.value="";
   cargarProductos2();
 }
-
-
-
